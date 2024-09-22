@@ -13,17 +13,17 @@ VOLUME_EXTENSIONS=sonarqube_sonarqube_extensions
 help: ## Print help.
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n\nTargets:\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 ps: ## Show containers.
-	@docker compose ps
+	@docker-compose ps
 build: ## Build all containers
-	@docker compose build --no-cache
+	@docker-compose build --no-cache
 start: ## Start all containers
-	@docker compose up --force-recreate -d
+	@docker-compose up --force-recreate -d
 fresh: stop destroy build start ## Destroy & recreate all containers
 stop: ## Stop all containers
-	@docker compose stop
+	@docker-compose stop
 restart: stop start ## Restart all containers
 destroy: stop ## Destroy all containers
-	@docker compose down
+	@docker-compose down
 	@if [ "$(shell docker volume ls --filter name=${VOLUME_DATABASE_DATA} --format {{.Name}})" ]; then \
 		docker volume rm ${VOLUME_DATABASE_DATA}; \
 	fi
